@@ -1,0 +1,11 @@
+﻿h1 {
+    font-size: 50px;
+}
+
+.first{
+    text-decoration: underline;
+}
+
+#second{
+    font-style: italic;
+}
