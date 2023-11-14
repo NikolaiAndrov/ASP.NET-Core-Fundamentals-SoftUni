@@ -5,9 +5,19 @@
 	ViewData["Title"] = "All Products";
 }
 
-<div class="card" style="width: 18rem;">
+<div class="row" style="width: 23rem">
+	<form asp-controller="Product" asp-action="My-Products" method="get">
+		<div class="input-group">
+			<input type="search" name="keyword" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+			<button type="submit" class="btn btn-outline-primary">search</button>
+		</div>
+	</form>
+</div>
+
+
+<div class="card" style="width: 17rem;">
 	<div class="card-header">@ViewData["Title"]</div>
-	<ul class="list-group list-group-flush"> 
+	<ul class="list-group list-group-flush">
 		@foreach (ProductViewModel product in Model)
 		{
 			<li class="list-group-item">
