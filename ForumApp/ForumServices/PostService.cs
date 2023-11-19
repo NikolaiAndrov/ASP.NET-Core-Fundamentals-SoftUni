@@ -1,5 +1,7 @@
 ﻿namespace ForumServices
 {
+    using Microsoft.EntityFrameworkCore;
+
     using ForumData;
     using ForumServices.Contracts;
     using ForumViewModels.Post;
@@ -13,9 +15,18 @@
             this.forumDbContext = forumDbContext;
         }
 
-        public Task<IEnumerable<PostViewModel>> ListAllAsync()
+        public async Task<IEnumerable<PostViewModel>> ListAllAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<PostViewModel> posts = await forumDbContext.Posts
+                .Select(p => new PostViewModel
+                {
+                    Id = p.Id.ToString(),
+                    Title = p.Title,
+                    Content = p.Content,
+                })
+                .ToArrayAsync();
+
+            return posts;
         }
     }
 }

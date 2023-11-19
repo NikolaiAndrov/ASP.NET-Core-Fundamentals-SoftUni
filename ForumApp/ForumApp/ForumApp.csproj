@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ForumData\ForumData.csproj" />
+    <ProjectReference Include="..\ForumServices\ForumServices.csproj" />
     <ProjectReference Include="..\ForumViewModels\ForumViewModels.csproj" />
   </ItemGroup>
 

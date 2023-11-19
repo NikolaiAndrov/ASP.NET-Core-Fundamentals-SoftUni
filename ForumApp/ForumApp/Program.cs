@@ -1,9 +1,12 @@
 namespace ForumApp
 {
-	using ForumData;
-	using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
 
-	public class Program
+	using ForumData;
+    using ForumServices.Contracts;
+    using ForumServices;
+
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -17,6 +20,9 @@ namespace ForumApp
 			{
 				options.UseSqlServer(connectionString);
 			});
+
+			//Add custom services
+			builder.Services.AddScoped<IPostService, PostService>();
 
 			var app = builder.Build();
 
