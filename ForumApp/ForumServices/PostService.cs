@@ -5,8 +5,9 @@
     using ForumData;
     using ForumServices.Contracts;
     using ForumViewModels.Post;
+	using ForumDataModels;
 
-    public class PostService : IPostService
+	public class PostService : IPostService
     {
         private readonly ForumDbContext forumDbContext;
 
@@ -28,5 +29,17 @@
 
             return posts;
         }
-    }
+
+		public async Task AddModelAsync(PostFormModel model)
+		{
+			Post post = new Post
+            {
+                Title = model.Title,
+                Content = model.Content,
+            };
+
+            await forumDbContext.Posts.AddAsync(post);
+            await forumDbContext.SaveChangesAsync();
+		}
+	}
 }
