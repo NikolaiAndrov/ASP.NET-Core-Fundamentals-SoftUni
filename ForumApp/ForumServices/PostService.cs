@@ -41,5 +41,30 @@
             await forumDbContext.Posts.AddAsync(post);
             await forumDbContext.SaveChangesAsync();
 		}
+
+		public async Task<PostFormModel> GetByIdAsync(string id)
+		{
+			Post post = await this.forumDbContext.Posts
+                .FirstAsync(p => p.Id.ToString() == id);
+
+			PostFormModel postViewModel = new PostFormModel
+			{
+                Title = post.Title,
+                Content = post.Content
+            };
+
+            return postViewModel;
+		}
+
+		public async Task Edit(string id, PostFormModel model)
+		{
+            Post post = await this.forumDbContext.Posts
+                .FirstAsync(p => p.Id.ToString() == id);
+
+            post.Title = model.Title;
+            post.Content = model.Content;
+
+            await this.forumDbContext.SaveChangesAsync();
+		}
 	}
 }
