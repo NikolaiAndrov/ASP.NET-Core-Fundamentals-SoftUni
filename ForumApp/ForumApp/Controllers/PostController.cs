@@ -84,5 +84,21 @@
 
 			return RedirectToAction(nameof(All));
 		}
-    }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                await this.postService.DeleteByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+	}
 }

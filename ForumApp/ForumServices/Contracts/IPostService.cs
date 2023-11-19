@@ -11,5 +11,7 @@
         Task<PostFormModel> GetByIdAsync(string id);
 
         Task Edit(string id, PostFormModel model);
+
+        Task DeleteByIdAsync(string id);
     }
 }

@@ -66,5 +66,14 @@
 
             await this.forumDbContext.SaveChangesAsync();
 		}
+
+		public async Task DeleteByIdAsync(string id)
+		{
+			Post post = await this.forumDbContext.Posts
+                .FirstAsync(p => p.Id.ToString() == id);
+
+            this.forumDbContext.Posts.Remove(post);
+            await this.forumDbContext.SaveChangesAsync();
+		}
 	}
 }
