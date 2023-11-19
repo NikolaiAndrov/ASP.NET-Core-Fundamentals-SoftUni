@@ -1,8 +1,9 @@
 ﻿namespace ForumApp.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     using ForumServices.Contracts;
     using ForumViewModels.Post;
-    using Microsoft.AspNetCore.Mvc;
     using static ForumCommon.Validations.PostErrorMessages;
 
     public class PostController : Controller
