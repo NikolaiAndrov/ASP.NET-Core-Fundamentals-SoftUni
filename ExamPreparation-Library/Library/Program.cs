@@ -1,4 +1,6 @@
 using Library.Data;
+using Library.Services;
+using Library.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +22,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddEntityFrameworkStores<LibraryDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+// Add custom services
+builder.Services.AddTransient<IBookService, BookService>();
 
 var app = builder.Build();
 
