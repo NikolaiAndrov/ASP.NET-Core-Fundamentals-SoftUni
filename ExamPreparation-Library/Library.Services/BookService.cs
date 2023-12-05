@@ -1,6 +1,7 @@
 ﻿namespace Library.Services
 {
 	using Library.Data;
+	using Library.Data.Models;
 	using Library.Services.Interfaces;
 	using Library.ViewModels.Book;
 	using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,19 @@
             this.context = context;	
         }
 
-        public async Task<ICollection<BookViewModel>> GetAllBooksAsync()
+		public async Task AddToCollectionAsync(int bookId, string collectorId)
+		{
+			IdentityUserBook userBook = new IdentityUserBook
+			{
+				CollectorId = collectorId,
+				BookId = bookId
+			};
+
+		 	await context.UsersBooks.AddAsync(userBook);
+			await context.SaveChangesAsync();
+		}
+
+		public async Task<ICollection<BookViewModel>> GetAllBooksAsync()
 		{
 			ICollection<BookViewModel> books = await context.Books
 				.Select(b => new BookViewModel
@@ -25,6 +38,24 @@
 					Author = b.Author,
 					Rating = b.Rating,
 					Category = b.Category.Name
+				})
+				.ToListAsync();
+
+			return books;
+		}
+
+		public async Task<ICollection<BookMineViewModel>> GetMineBooksAsync(string userId)
+		{
+			ICollection<BookMineViewModel> books = await context.UsersBooks
+				.Where(ub => ub.CollectorId == userId)
+				.Select(b => new BookMineViewModel
+				{
+					Id = b.Book.Id,
+					ImageUrl = b.Book.ImageUrl,
+					Title= b.Book.Title,
+					Author = b.Book.Author,
+					Description = b.Book.Description,
+					Category = b.Book.Category.Name
 				})
 				.ToListAsync();
 
