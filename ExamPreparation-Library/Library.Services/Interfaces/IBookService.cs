@@ -1,6 +1,7 @@
 ﻿namespace Library.Services.Interfaces
 {
 	using Library.ViewModels.Book;
+	using Library.ViewModels.Category;
 
 	public interface IBookService
 	{
@@ -11,5 +12,9 @@
 		Task<ICollection<BookMineViewModel>> GetMineBooksAsync(string userId);
 
 		Task RemoveFromMineCollection(int bookId, string userId);
+
+		Task<ICollection<CategoryPostModel>> GetAllCategories();
+
+		Task AddAsync(BookPostModel model);
 	}
 }

@@ -66,5 +66,37 @@
 
 			return RedirectToAction("Mine", "Book");
 		}
+
+		public async Task<IActionResult> Add()
+		{
+			BookPostModel book = new BookPostModel
+			{
+				Categories = await bookService.GetAllCategories()
+			};
+
+			return View(book);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Add(BookPostModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				model.Categories = await bookService.GetAllCategories();
+				return View(model);
+			}
+
+			try
+			{
+				await bookService.AddAsync(model);
+			}
+			catch (Exception)
+			{
+				model.Categories = await bookService.GetAllCategories();
+				return View(model);
+			}
+
+			return RedirectToAction("All", "Book");
+		}						
 	}
 }

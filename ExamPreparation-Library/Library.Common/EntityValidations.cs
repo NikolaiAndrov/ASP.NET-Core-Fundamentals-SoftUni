@@ -2,7 +2,7 @@
 {
 	public static class EntityValidations
 	{
-		public static class BookValidation
+        public static class BookValidation
 		{
 			public const int TitleMinLength = 10;
 			public const int TitleMaxLength = 50;
@@ -21,6 +21,9 @@
 		{
 			public const int NameMinLength = 5;
 			public const int NameMaxLength = 50;
+
+			public const int IdMinValue = 1;
+			public const int IdMaxValue = 5;
         }
     }
 }

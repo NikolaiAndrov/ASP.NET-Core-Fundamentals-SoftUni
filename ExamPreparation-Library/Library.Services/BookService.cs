@@ -4,6 +4,7 @@
 	using Library.Data.Models;
 	using Library.Services.Interfaces;
 	using Library.ViewModels.Book;
+	using Library.ViewModels.Category;
 	using Microsoft.EntityFrameworkCore;
 
 	public class BookService : IBookService
@@ -15,8 +16,37 @@
             this.context = context;	
         }
 
+		public async Task AddAsync(BookPostModel model)
+		{
+			if (string.IsNullOrWhiteSpace(model.Author) || 
+				string.IsNullOrWhiteSpace(model.Description) || 
+				string.IsNullOrWhiteSpace(model.ImageUrl) ||
+				string.IsNullOrWhiteSpace(model.Title))
+			{
+				throw new InvalidOperationException();
+			}
+
+		    Book book = new Book
+			{
+				Title = model.Title,
+				Author = model.Author,
+				Description = model.Description,
+				ImageUrl = model.ImageUrl,
+				Rating = model.Rating,
+				CategoryId = model.CategoryId,
+			};
+
+			await context.Books.AddAsync(book);
+			await context.SaveChangesAsync();
+		}
+
 		public async Task AddToCollectionAsync(int bookId, string collectorId)
 		{
+			if (context.UsersBooks.Any(ub => ub.BookId == bookId && ub.CollectorId == collectorId))
+			{
+				throw new InvalidOperationException();
+			}
+
 			IdentityUserBook userBook = new IdentityUserBook
 			{
 				CollectorId = collectorId,
@@ -42,6 +72,19 @@
 				.ToListAsync();
 
 			return books;
+		}
+
+		public async Task<ICollection<CategoryPostModel>> GetAllCategories()
+		{
+			ICollection<CategoryPostModel> categories = await context.Categories
+				.Select(c => new CategoryPostModel
+				{
+					CategoryId = c.Id,
+					Name = c.Name,
+				})
+				.ToListAsync();
+
+			return categories;
 		}
 
 		public async Task<ICollection<BookMineViewModel>> GetMineBooksAsync(string userId)
