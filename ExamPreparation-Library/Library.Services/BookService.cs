@@ -61,5 +61,14 @@
 
 			return books;
 		}
+
+		public async Task RemoveFromMineCollection(int bookId, string userId)
+		{
+			IdentityUserBook userBook = await context.UsersBooks
+				.FirstAsync(ub => ub.CollectorId == userId && ub.BookId == bookId);
+
+			context.UsersBooks.Remove(userBook);
+			await context.SaveChangesAsync();
+		}
 	}
 }

@@ -9,5 +9,7 @@
 		Task AddToCollectionAsync(int bookId, string collectorId);
 
 		Task<ICollection<BookMineViewModel>> GetMineBooksAsync(string userId);
+
+		Task RemoveFromMineCollection(int bookId, string userId);
 	}
 }

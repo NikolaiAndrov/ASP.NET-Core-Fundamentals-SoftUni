@@ -52,5 +52,19 @@
 
 			return View(books);
 		}
+
+		public async Task<IActionResult> RemoveFromCollection(int Id)
+		{
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				await bookService.RemoveFromMineCollection(Id, userId);
+			}
+			catch (Exception)
+			{
+			}
+
+			return RedirectToAction("Mine", "Book");
+		}
 	}
 }
