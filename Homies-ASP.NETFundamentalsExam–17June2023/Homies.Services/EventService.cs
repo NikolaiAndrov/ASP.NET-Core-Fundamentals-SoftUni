@@ -37,6 +37,22 @@
 			await dbContext.SaveChangesAsync();
 		}
 
+		public async Task<ICollection<EventAllViewModel>> GetAllEventsAsync()
+		{
+			ICollection<EventAllViewModel> events = await dbContext.Events
+				.Select(e => new EventAllViewModel
+				{
+					Id = e.Id,
+					Name = e.Name,
+					Start = e.Start.ToString("yyyy-MM-dd H:mm"),
+					Type = e.Type.Name,
+					Organiser = e.Organiser.UserName
+				})
+				.ToArrayAsync();
+
+			return events;
+		}
+
 		public async Task<ICollection<TypePostModel>> GetAllTypesForEventAsync()
 		{
 			ICollection<TypePostModel> types = await dbContext.Types

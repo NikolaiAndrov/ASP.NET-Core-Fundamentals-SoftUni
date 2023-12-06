@@ -2,9 +2,11 @@
 {
 	using Homies.Services.Interfaces;
 	using Homies.ViewModels;
+	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Security.Claims;
 
+	[Authorize]
 	public class EventController : Controller
 	{
 		private readonly IEventService eventService;
@@ -13,9 +15,10 @@
         {
             this.eventService = eventService;
         }
-        public IActionResult All()
+        public async Task<IActionResult> All()
 		{
-			return View();
+			ICollection<EventAllViewModel> events = await eventService.GetAllEventsAsync();
+			return View(events);
 		}
 
 		public async Task<IActionResult> Add()
@@ -36,7 +39,6 @@
 				model.Types = await eventService.GetAllTypesForEventAsync();
 				return View(model);
 			}
-
 
 			try
 			{

@@ -7,5 +7,7 @@
 		Task<ICollection<TypePostModel>> GetAllTypesForEventAsync();
 
 		Task AddEventAsync(EventPostModel model, string userId);
+
+		Task<ICollection<EventAllViewModel>> GetAllEventsAsync();
 	}
 }
