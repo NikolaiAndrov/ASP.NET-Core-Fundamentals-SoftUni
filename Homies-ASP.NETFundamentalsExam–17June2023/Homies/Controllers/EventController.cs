@@ -53,5 +53,21 @@
 
 			return RedirectToAction("All", "Event");
 		}
+
+		public async Task<IActionResult> Details(int Id)
+		{
+			EventDetailsViewModel eventDetails;
+
+			try
+			{
+				eventDetails = await eventService.GetEventDetailsAsync(Id);
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Event");
+			}
+
+			return View(eventDetails);
+		}
 	}
 }

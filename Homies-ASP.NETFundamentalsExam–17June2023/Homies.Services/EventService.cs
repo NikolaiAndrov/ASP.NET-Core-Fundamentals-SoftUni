@@ -65,5 +65,27 @@
 
 			return types;
 		}
+
+		public async Task<EventDetailsViewModel> GetEventDetailsAsync(int eventId)
+		{
+			string dateFormat = "yyyy-MM-dd H:mm";
+
+			EventDetailsViewModel eventDetails = await dbContext.Events
+				.Where(e => e.Id == eventId)
+				.Select(e => new EventDetailsViewModel
+				{
+					Id = e.Id,
+					Name = e.Name,
+					Description = e.Description,
+					Start = e.Start.ToString(dateFormat),
+					End = e.End.ToString(dateFormat),
+					Organiser = e.Organiser.UserName,
+					CreatedOn = e.CreatedOn.ToString(dateFormat),
+					Type = e.Type.Name,
+				})
+				.FirstAsync();
+
+			return eventDetails;
+		}
 	}
 }
