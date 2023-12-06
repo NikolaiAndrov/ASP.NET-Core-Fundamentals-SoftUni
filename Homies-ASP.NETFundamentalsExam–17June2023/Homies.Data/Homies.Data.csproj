@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Homies.Common\Homies.Common.csproj" />
+  </ItemGroup>
+
 </Project>
