@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Homies.Data\Homies.Data.csproj" />
+    <ProjectReference Include="..\Homies.Services\Homies.Services.csproj" />
+    <ProjectReference Include="..\Homies.ViewModels\Homies.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
