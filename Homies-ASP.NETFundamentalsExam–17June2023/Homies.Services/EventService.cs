@@ -18,9 +18,8 @@
 
 		public async Task AddEventAsync(EventPostModel model, string userId)
 		{
-			string dateFormat = @"yyyy-MM-dd H:mm";
-			DateTime start = DateTime.ParseExact(model.Start, dateFormat, CultureInfo.InvariantCulture);
-			DateTime end = DateTime.ParseExact(model.End, dateFormat, CultureInfo.InvariantCulture);
+			DateTime start = DateTime.Parse(model.Start, CultureInfo.InvariantCulture);
+			DateTime end = DateTime.Parse(model.End, CultureInfo.InvariantCulture);
 
 			Event eventToAdd = new Event
 			{
@@ -47,9 +46,8 @@
 				throw new InvalidOperationException();
 			}
 
-			string dateFormat = "yyyy-MM-dd H:mm";
-			DateTime start = DateTime.ParseExact(eventPost.Start, dateFormat, CultureInfo.InvariantCulture);
-			DateTime end = DateTime.ParseExact(eventPost.End, dateFormat, CultureInfo.InvariantCulture);
+			DateTime start = DateTime.Parse(eventPost.Start, CultureInfo.InvariantCulture);
+			DateTime end = DateTime.Parse(eventPost.End, CultureInfo.InvariantCulture);
 
 			eventToEdit.Name = eventPost.Name;
 			eventToEdit.Description = eventPost.Description;
@@ -123,14 +121,12 @@
 				throw new InvalidCastException();
 			}
 
-			string dateFormat = "yyyy-MM-dd H:mm";
-
 			EventPostModel eventPost = new EventPostModel
 			{
 				Name = eventToEdit.Name,
 				Description= eventToEdit.Description,
-				Start = eventToEdit.Start.ToString(dateFormat),
-				End = eventToEdit.End.ToString(dateFormat),
+				Start = eventToEdit.Start.ToString(),
+				End = eventToEdit.End.ToString(),
 				TypeId = eventToEdit.TypeId
 			};
 
