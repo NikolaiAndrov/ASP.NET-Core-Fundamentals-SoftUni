@@ -11,5 +11,8 @@
 		Task<ICollection<EventAllViewModel>> GetAllEventsAsync();
 
 		Task<EventDetailsViewModel> GetEventDetailsAsync(int eventId);
+
+		Task<EventPostModel> GetEventForEditAsync(int eventId, string userId);
+		Task EditEventAsync(int eventId, EventPostModel eventPost, string userId);
 	}
 }

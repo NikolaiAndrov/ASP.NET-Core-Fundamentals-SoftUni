@@ -69,5 +69,44 @@
 
 			return View(eventDetails);
 		}
+
+		public async Task<IActionResult> Edit(int Id)
+		{
+			EventPostModel eventPost;
+
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				eventPost = await eventService.GetEventForEditAsync(Id, userId);
+				eventPost.Types = await eventService.GetAllTypesForEventAsync();
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Event");
+			}
+
+			return View(eventPost);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int Id, EventPostModel eventPost)
+		{
+			if (!ModelState.IsValid)
+			{
+				eventPost.Types = await eventService.GetAllTypesForEventAsync();
+				return View(eventPost);
+			}
+
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				await eventService.EditEventAsync(Id, eventPost, userId);
+			}
+			catch (Exception)
+			{
+			}
+
+			return RedirectToAction("All", "Event");
+		}
 	}
 }
