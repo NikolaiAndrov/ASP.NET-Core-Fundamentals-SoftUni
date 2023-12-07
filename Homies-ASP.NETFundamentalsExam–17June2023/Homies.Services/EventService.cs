@@ -146,6 +146,15 @@
 			await dbContext.SaveChangesAsync();
 		}
 
+		public async Task LeaveEventAsync(int eventId, string userId)
+		{
+			EventParticipant eventParticipant = await dbContext.EventsParticipants
+				.FirstAsync(ep => ep.EventId == eventId && ep.HelperId == userId);
+
+			dbContext.EventsParticipants.Remove(eventParticipant);
+			await dbContext.SaveChangesAsync();
+		}
+
 		public async Task<ICollection<EventAllViewModel>> ViewJoinedEventsAsync(string userId)
 		{
 			string dateFormat = "yyyy-MM-dd H:mm";

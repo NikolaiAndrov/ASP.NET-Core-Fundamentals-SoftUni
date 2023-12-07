@@ -18,5 +18,7 @@
 		Task JoinEventAsync(int eventId, string userId);
 
 		Task<ICollection<EventAllViewModel>> ViewJoinedEventsAsync(string userId);
+
+		Task LeaveEventAsync(int eventId, string userId);
 	}
 }

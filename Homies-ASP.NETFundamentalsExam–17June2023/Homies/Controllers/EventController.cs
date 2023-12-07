@@ -129,5 +129,19 @@
 			ICollection<EventAllViewModel> events = await eventService.ViewJoinedEventsAsync(userId);
 			return View(events);
 		}
+
+		public async Task<IActionResult> Leave(int Id)
+		{
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				await eventService.LeaveEventAsync(Id, userId);
+			}
+			catch (Exception)
+			{
+			}
+
+			return RedirectToAction("All", "Event");
+		}
 	}
 }
