@@ -47,8 +47,8 @@
 				throw new InvalidOperationException();
 			}
 
-			DateTime start = DateTime.Parse(eventPost.Start, CultureInfo.InvariantCulture);
-			DateTime end = DateTime.Parse(eventPost.End, CultureInfo.InvariantCulture);
+			DateTime start = DateTime.Parse(eventPost.Start);
+			DateTime end = DateTime.Parse(eventPost.End);
 
 			eventToEdit.Name = eventPost.Name;
 			eventToEdit.Description = eventPost.Description;
@@ -136,6 +136,11 @@
 
 		public async Task JoinEventAsync(int eventId, string userId)
 		{
+			if (await dbContext.EventsParticipants.AnyAsync(ep => ep.EventId == eventId && ep.HelperId == userId))
+			{
+				throw new InvalidOperationException();
+			}
+
 			EventParticipant eventParticipant = new EventParticipant
 			{
 				HelperId = userId,

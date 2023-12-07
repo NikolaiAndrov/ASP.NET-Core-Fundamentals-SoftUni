@@ -118,15 +118,25 @@
 			}
 			catch (Exception)
 			{
+				return RedirectToAction("All", "Event");
 			}
 
-			return RedirectToAction("All", "Event");
+			return RedirectToAction("Joined", "Event");
 		}
 
 		public async Task<IActionResult> Joined()
 		{
-			string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-			ICollection<EventAllViewModel> events = await eventService.ViewJoinedEventsAsync(userId);
+			ICollection<EventAllViewModel> events;
+
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				events = await eventService.ViewJoinedEventsAsync(userId);
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Event");
+			}
 			return View(events);
 		}
 
