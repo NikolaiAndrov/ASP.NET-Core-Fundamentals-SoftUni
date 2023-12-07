@@ -4,6 +4,7 @@
 	using Homies.Data.Models;
 	using Homies.Services.Interfaces;
 	using Homies.ViewModels;
+	using Microsoft.AspNetCore.Identity;
 	using Microsoft.EntityFrameworkCore;
 	using System.Globalization;
 
@@ -67,7 +68,7 @@
 				{
 					Id = e.Id,
 					Name = e.Name,
-					Start = e.Start.ToString(dateFormat),
+					Start = e.Start.ToString(dateFormat, CultureInfo.InvariantCulture),
 					Type = e.Type.Name,
 					Organiser = e.Organiser.UserName
 				})
@@ -100,10 +101,10 @@
 					Id = e.Id,
 					Name = e.Name,
 					Description = e.Description,
-					Start = e.Start.ToString(dateFormat),
-					End = e.End.ToString(dateFormat),
+					Start = e.Start.ToString(dateFormat, CultureInfo.InvariantCulture),
+					End = e.End.ToString(dateFormat, CultureInfo.InvariantCulture),
 					Organiser = e.Organiser.UserName,
-					CreatedOn = e.CreatedOn.ToString(dateFormat),
+					CreatedOn = e.CreatedOn.ToString(dateFormat, CultureInfo.InvariantCulture),
 					Type = e.Type.Name,
 				})
 				.FirstAsync();
@@ -131,6 +132,37 @@
 			};
 
 			return eventPost;
+		}
+
+		public async Task JoinEventAsync(int eventId, string userId)
+		{
+			EventParticipant eventParticipant = new EventParticipant
+			{
+				HelperId = userId,
+				EventId = eventId
+			};
+
+			await dbContext.EventsParticipants.AddAsync(eventParticipant);
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task<ICollection<EventAllViewModel>> ViewJoinedEventsAsync(string userId)
+		{
+			string dateFormat = "yyyy-MM-dd H:mm";
+
+			ICollection<EventAllViewModel> events = await dbContext.EventsParticipants
+				.Where(ep => ep.HelperId == userId)
+				.Select(e => new EventAllViewModel
+				{
+					Id = e.EventId,
+					Name = e.Event.Name,
+					Start = e.Event.Start.ToString(dateFormat, CultureInfo.InvariantCulture),
+					Type = e.Event.Type.Name,
+					Organiser = e.Event.Organiser.UserName
+				})
+				.ToArrayAsync();
+
+			return events;
 		}
 	}
 }

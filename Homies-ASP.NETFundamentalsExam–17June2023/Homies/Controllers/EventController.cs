@@ -108,5 +108,26 @@
 
 			return RedirectToAction("All", "Event");
 		}
+
+		public async Task<IActionResult> Join(int Id)
+		{
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				await eventService.JoinEventAsync(Id, userId);
+			}
+			catch (Exception)
+			{
+			}
+
+			return RedirectToAction("All", "Event");
+		}
+
+		public async Task<IActionResult> Joined()
+		{
+			string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+			ICollection<EventAllViewModel> events = await eventService.ViewJoinedEventsAsync(userId);
+			return View(events);
+		}
 	}
 }

@@ -14,5 +14,9 @@
 
 		Task<EventPostModel> GetEventForEditAsync(int eventId, string userId);
 		Task EditEventAsync(int eventId, EventPostModel eventPost, string userId);
+
+		Task JoinEventAsync(int eventId, string userId);
+
+		Task<ICollection<EventAllViewModel>> ViewJoinedEventsAsync(string userId);
 	}
 }
