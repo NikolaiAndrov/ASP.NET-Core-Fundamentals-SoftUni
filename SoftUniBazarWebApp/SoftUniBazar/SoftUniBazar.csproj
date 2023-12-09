@@ -23,6 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\SoftUniBazar.Data\SoftUniBazar.Data.csproj" />
     <ProjectReference Include="..\SoftUniBazar.Models\SoftUniBazar.Models.csproj" />
+    <ProjectReference Include="..\SoftUniBazar.Services\SoftUniBazar.Services.csproj" />
+    <ProjectReference Include="..\SoftUniBazar.ViewModels\SoftUniBazar.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

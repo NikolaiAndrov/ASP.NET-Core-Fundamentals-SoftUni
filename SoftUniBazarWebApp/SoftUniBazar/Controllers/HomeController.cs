@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SoftUniBazar.Models;
-using System.Diagnostics;
-
-namespace SoftUniBazar.Controllers
+﻿namespace SoftUniBazar.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using SoftUniBazar.Models;
+    using System.Diagnostics;
+
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
+            if (this.User?.Identity?.IsAuthenticated ?? false)
+            {
+                RedirectToAction("All", "Ad");
+            }
+
             return View();
         }
 
