@@ -13,5 +13,7 @@
 		Task EditPostAsync(int adId, AdPostViewModel model, string userId);
 
 		Task<AdPostViewModel> GetModelForEditAsync(int adId, string userId);
+
+		Task<ICollection<ListAllAdViewModel>> GetCartAsync(string userId);
 	}
 }

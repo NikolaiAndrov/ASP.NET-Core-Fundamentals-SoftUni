@@ -72,6 +72,28 @@
 			return allAds;
 		}
 
+		public async Task<ICollection<ListAllAdViewModel>> GetCartAsync(string userId)
+		{
+			string dateFormat = "dd/MM/yyyy H:mm";
+
+			ICollection<ListAllAdViewModel> cartAds = await dbContext.AdsBuyers
+				.Where(ab => ab.BuyerId == userId)
+				.Select(ab => new ListAllAdViewModel
+				{
+					Id = ab.AdId,
+					Name = ab.Ad.Name,
+					ImageUrl = ab.Ad.ImageUrl,
+					CreatedOn = ab.Ad.CreatedOn.ToString(dateFormat, CultureInfo.InvariantCulture),
+					Category = ab.Ad.Category.Name,
+					Description= ab.Ad.Description,
+					Price = ab.Ad.Price.ToString("f2"),
+					Owner = ab.Ad.Owner.UserName
+				})
+				.ToArrayAsync();
+
+			return cartAds;
+		}
+
 		public async Task<ICollection<CategorySelectViewModel>> GetCategoriesAsync()
 		{
 			ICollection<CategorySelectViewModel> categories = await dbContext.Categories

@@ -91,5 +91,14 @@
 
 			return RedirectToAction("All", "Ad");
 		}
+
+		public async Task<IActionResult> Cart()
+		{
+			string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+
+			ICollection<ListAllAdViewModel> cartAds = await adService.GetCartAsync(userId);
+
+			return View(cartAds);
+		}
 	}
 }
