@@ -100,5 +100,34 @@
 
 			return View(cartAds);
 		}
-	}
+
+		public async Task<IActionResult> AddToCart(int Id)
+		{
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				await adService.AddToCartAsync(Id, userId);
+			}
+			catch (Exception)
+			{
+			 	return RedirectToAction("All", "Ad");
+			}
+
+			return RedirectToAction("Cart", "Ad");
+		}
+
+		public async Task<IActionResult> RemoveFromCart(int Id)
+		{
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+				await adService.RemoveFromCartAsync(Id, userId);
+			}
+			catch (Exception)
+			{
+			}
+
+			return RedirectToAction("All", "Ad");
+		}
+    }
 }

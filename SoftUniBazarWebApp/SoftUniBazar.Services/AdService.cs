@@ -33,7 +33,24 @@
 			await dbContext.SaveChangesAsync();
 		}
 
-		public async Task EditPostAsync(int adId, AdPostViewModel model, string userId)
+        public async Task AddToCartAsync(int adId, string userId)
+        {
+			if (await dbContext.AdsBuyers.AnyAsync(ab => ab.BuyerId == userId && ab.AdId == adId))
+			{
+				throw new InvalidOperationException();
+			}
+
+			AdBuyer adBuyer = new AdBuyer
+			{
+				BuyerId = userId,
+				AdId = adId,
+			};
+
+			await dbContext.AdsBuyers.AddAsync(adBuyer);
+			await dbContext.SaveChangesAsync();
+        }
+
+        public async Task EditPostAsync(int adId, AdPostViewModel model, string userId)
 		{
 			Ad ad = await dbContext.Ads.FirstAsync(a => a.Id == adId);
 
@@ -129,5 +146,14 @@
 
 			return model;
 		}
-	}
+
+        public async Task RemoveFromCartAsync(int adId, string userId)
+        {
+			AdBuyer adBuyer = await dbContext.AdsBuyers
+				 .FirstAsync(ab => ab.BuyerId == userId && ab.AdId == adId);
+
+			dbContext.AdsBuyers.Remove(adBuyer);
+			await dbContext.SaveChangesAsync();
+        }
+    }
 }
