@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SoftUniBazar.Common\SoftUniBazar.Common.csproj" />
+  </ItemGroup>
+
 </Project>

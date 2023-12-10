@@ -10,7 +10,7 @@
         {
             if (this.User?.Identity?.IsAuthenticated ?? false)
             {
-                RedirectToAction("All", "Ad");
+                return RedirectToAction("All", "Ad");
             }
 
             return View();
