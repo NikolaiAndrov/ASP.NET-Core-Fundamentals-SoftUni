@@ -35,6 +35,22 @@
             await this.dbContext.SaveChangesAsync();
         }
 
+        public async Task<AdPostModel> GetAdForEditAsync(int adId)
+        {
+            AdPostModel model = await this.dbContext.Ads
+                .Select(ad => new AdPostModel
+                {
+                    Name = ad.Name,
+                    Description = ad.Description,
+                    ImageUrl = ad.ImageUrl,
+                    Price = ad.Price,
+                    CategoryId = ad.CategoryId,
+                })
+                .FirstAsync();
+
+            return model;
+        }
+
         public async Task<IEnumerable<AdAllViewModel>> GetAllAdsAsync()
         {
             IEnumerable<AdAllViewModel> ads = await this.dbContext.Ads
@@ -53,5 +69,11 @@
 
             return ads;
         }
+
+        public async Task<bool> IsAdExistingByIdAsync(int adId)
+            => await this.dbContext.Ads.AnyAsync(a => a.Id == adId);
+
+        public async Task<bool> IsUserOwnerOfAdAsync(string userId, int adId)
+            => await this.dbContext.Ads.AnyAsync(a => a.OwnerId == userId && a.Id == adId);
     }
 }

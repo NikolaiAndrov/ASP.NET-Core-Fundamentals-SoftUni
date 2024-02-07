@@ -98,5 +98,42 @@
 
             return this.View(ads);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            bool isAdExisting;
+            bool isUserOwnerOfAd;
+
+            try
+            {
+                string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                isAdExisting = await this.adService.IsAdExistingByIdAsync(id);
+                isUserOwnerOfAd = await this.adService.IsUserOwnerOfAdAsync(userId, id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            if (!isAdExisting || !isUserOwnerOfAd)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            AdPostModel model;
+
+            try
+            {
+                model = await this.adService.GetAdForEditAsync(id);
+                model.Categories = await this.categoryService.GetAllCategoriesAsync();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            return this.View(model);
+        }
     }
 }
