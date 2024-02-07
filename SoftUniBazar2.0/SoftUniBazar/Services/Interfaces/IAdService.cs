@@ -1,7 +1,7 @@
-﻿using SoftUniBazar.ViewModels.Ad;
-
-namespace SoftUniBazar.Services.Interfaces
+﻿namespace SoftUniBazar.Services.Interfaces
 {
+    using SoftUniBazar.ViewModels.Ad;
+
     public interface IAdService 
     {
         Task AddNewAdAsync(AdPostModel model, string userId);
@@ -15,5 +15,9 @@ namespace SoftUniBazar.Services.Interfaces
         Task<AdPostModel> GetAdForEditAsync(int adId);
 
         Task EditAdAsync(AdPostModel model, int adId);
+
+        Task<bool> IsAdInCartAsync(int adId, string userId);
+
+        Task AddToCartAsync(int adId, string userId);
     }
 }

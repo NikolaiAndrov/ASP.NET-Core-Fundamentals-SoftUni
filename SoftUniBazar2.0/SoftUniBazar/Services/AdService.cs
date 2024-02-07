@@ -35,6 +35,18 @@
             await this.dbContext.SaveChangesAsync();
         }
 
+        public async Task AddToCartAsync(int adId, string userId)
+        {
+            AdBuyer adBuyer = new AdBuyer
+            {
+                AdId = adId,
+                BuyerId = userId
+            };
+
+            await this.dbContext.AdsBuyers.AddAsync(adBuyer);
+            await this.dbContext.SaveChangesAsync();
+        }
+
         public async Task EditAdAsync(AdPostModel model, int adId)
         {
             Ad ad = await this.dbContext.Ads
@@ -86,6 +98,9 @@
 
         public async Task<bool> IsAdExistingByIdAsync(int adId)
             => await this.dbContext.Ads.AnyAsync(a => a.Id == adId);
+
+        public async Task<bool> IsAdInCartAsync(int adId, string userId)
+            => await this.dbContext.AdsBuyers.AnyAsync(ab => ab.BuyerId == userId && ab.AdId == adId);
 
         public async Task<bool> IsUserOwnerOfAdAsync(string userId, int adId)
             => await this.dbContext.Ads.AnyAsync(a => a.OwnerId == userId && a.Id == adId);

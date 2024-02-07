@@ -200,5 +200,47 @@
 
             return this.RedirectToAction("All", "Ad");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int id)
+        {
+            bool isAdExisting;
+            bool isUserOwnerOfAd;
+            bool isInCart;
+
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                isAdExisting = await this.adService.IsAdExistingByIdAsync(id);
+                isUserOwnerOfAd = await this.adService.IsUserOwnerOfAdAsync(userId, id);
+                isInCart = await this.adService.IsAdInCartAsync(id, userId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            if (!isAdExisting || isUserOwnerOfAd)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            if (isInCart)
+            {
+                return this.RedirectToAction("Cart", "Ad");
+            }
+
+            try
+            {
+                await this.adService.AddToCartAsync(id, userId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            return this.RedirectToAction("Cart", "Ad");
+        }
     }
 }
