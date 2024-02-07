@@ -1,4 +1,6 @@
-﻿@*@{
+﻿@model IEnumerable<AdAllViewModel>
+
+@{
     ViewBag.Title = "My Cart";
 }
 
@@ -20,7 +22,7 @@
                 <p class="mb-0"><span class="fw-bold">Seller: </span>@a.Owner</p>
             </div>
 
-            @if (User.Identity.Name != a.Owner)
+            @if (User.Identity!.Name != a.Owner)
             {
                 <form class="input-group-sm " asp-controller="Ad" asp-action="RemoveFromCart" asp-route-id="@a.Id">
                     <input type="submit" value="Remove from Cart" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
@@ -32,4 +34,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}*@
+}

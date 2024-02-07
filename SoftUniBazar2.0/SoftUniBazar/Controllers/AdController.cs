@@ -242,5 +242,23 @@
 
             return this.RedirectToAction("Cart", "Ad");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Cart()
+        {
+            IEnumerable<AdAllViewModel> ads;
+
+            try
+            {
+                string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                ads = await this.adService.GetCartElementsAsync(userId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            return this.View(ads);
+        }
     }
 }

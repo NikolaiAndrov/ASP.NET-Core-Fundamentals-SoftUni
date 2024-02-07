@@ -96,6 +96,26 @@
             return ads;
         }
 
+        public async Task<IEnumerable<AdAllViewModel>> GetCartElementsAsync(string userId)
+        {
+            IEnumerable<AdAllViewModel> ads = await this.dbContext.AdsBuyers
+                .Where(a => a.BuyerId == userId)
+                .Select(a => new AdAllViewModel
+                {
+                    Id = a.AdId,
+                    Name = a.Ad.Name,
+                    ImageUrl = a.Ad.ImageUrl,
+                    CreatedOn = a.Ad.CreatedOn.ToString(DateFormat),
+                    Category = a.Ad.Category.Name,
+                    Description = a.Ad.Description,
+                    Price = a.Ad.Price,
+                    Owner = a.Ad.Owner.UserName
+                })
+                .ToArrayAsync();
+
+            return ads;
+        }
+
         public async Task<bool> IsAdExistingByIdAsync(int adId)
             => await this.dbContext.Ads.AnyAsync(a => a.Id == adId);
 

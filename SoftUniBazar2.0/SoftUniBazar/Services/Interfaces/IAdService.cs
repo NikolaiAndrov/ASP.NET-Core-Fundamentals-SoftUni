@@ -19,5 +19,7 @@
         Task<bool> IsAdInCartAsync(int adId, string userId);
 
         Task AddToCartAsync(int adId, string userId);
+
+        Task<IEnumerable<AdAllViewModel>> GetCartElementsAsync(string userId);
     }
 }
