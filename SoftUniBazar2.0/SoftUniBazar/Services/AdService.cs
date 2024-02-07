@@ -124,5 +124,14 @@
 
         public async Task<bool> IsUserOwnerOfAdAsync(string userId, int adId)
             => await this.dbContext.Ads.AnyAsync(a => a.OwnerId == userId && a.Id == adId);
+
+        public async Task RemoveFromCartAsync(int adId, string userId)
+        {
+            AdBuyer adBuyer = await this.dbContext.AdsBuyers
+                .FirstAsync(ab => ab.BuyerId == userId && ab.AdId == adId);
+
+            this.dbContext.AdsBuyers.Remove(adBuyer);
+            await this.dbContext.SaveChangesAsync();
+        }
     }
 }

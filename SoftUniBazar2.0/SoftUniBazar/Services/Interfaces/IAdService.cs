@@ -21,5 +21,7 @@
         Task AddToCartAsync(int adId, string userId);
 
         Task<IEnumerable<AdAllViewModel>> GetCartElementsAsync(string userId);
+
+        Task RemoveFromCartAsync(int adId, string userId);
     }
 }
