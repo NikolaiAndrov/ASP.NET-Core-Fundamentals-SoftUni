@@ -5,5 +5,7 @@ namespace SoftUniBazar.Services.Interfaces
     public interface IAdService 
     {
         Task AddNewAdAsync(AdPostModel model, string userId);
+
+        Task<IEnumerable<AdAllViewModel>> GetAllAdsAsync();
     }
 }

@@ -8,6 +8,11 @@ namespace SoftUniBazar.Controllers
     {
         public IActionResult Index()
         {
+            if (this.User?.Identity?.IsAuthenticated ?? false)
+            {
+                return this.RedirectToAction("All", "Ad");
+            }
+
             return View();
         }
 

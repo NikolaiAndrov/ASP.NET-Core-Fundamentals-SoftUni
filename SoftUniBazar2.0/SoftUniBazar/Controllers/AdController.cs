@@ -5,7 +5,7 @@
     using SoftUniBazar.Services.Interfaces;
     using SoftUniBazar.ViewModels.Ad;
     using System.Security.Claims;
-    using static Common.GeneralApplicationMessages;
+    using static Common.GeneralApplicationConstants;
 
     [Authorize]
     public class AdController : Controller
@@ -80,6 +80,23 @@
             }
 
             return this.RedirectToAction("All", "Ad");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            IEnumerable<AdAllViewModel> ads;
+
+            try
+            {
+                ads = await this.adService.GetAllAdsAsync();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            return this.View(ads);
         }
     }
 }
