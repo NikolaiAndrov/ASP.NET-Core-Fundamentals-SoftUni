@@ -13,5 +13,7 @@ namespace SoftUniBazar.Services.Interfaces
         Task<bool> IsAdExistingByIdAsync(int adId);
 
         Task<AdPostModel> GetAdForEditAsync(int adId);
+
+        Task EditAdAsync(AdPostModel model, int adId);
     }
 }

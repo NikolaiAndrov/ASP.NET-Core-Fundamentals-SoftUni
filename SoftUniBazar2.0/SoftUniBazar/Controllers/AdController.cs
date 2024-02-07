@@ -55,6 +55,11 @@
                 this.ModelState.AddModelError(nameof(model.CategoryId), CategoryNotExisting);
             }
 
+            if (model.Price < 0m)
+            {
+                this.ModelState.AddModelError(nameof(model.Price), NegativePriceError);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 try
@@ -134,6 +139,66 @@
             }
 
             return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, AdPostModel model)
+        {
+            bool isAdExisting;
+            bool isUserOwnerOfAd;
+            bool isCategoryExisting;
+
+            try
+            {
+                string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                isAdExisting = await this.adService.IsAdExistingByIdAsync(id);
+                isUserOwnerOfAd = await this.adService.IsUserOwnerOfAdAsync(userId, id);
+                isCategoryExisting = await this.categoryService.IsCategoryExistingByIdAsync(model.CategoryId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            if (!isAdExisting || !isUserOwnerOfAd)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            if (!isCategoryExisting)
+            {
+                this.ModelState.AddModelError(nameof(model.CategoryId), CategoryNotExisting);
+            }
+
+            if (model.Price < 0m)
+            {
+                this.ModelState.AddModelError(nameof(model.Price), NegativePriceError);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                try
+                {
+                    model.Categories = await this.categoryService.GetAllCategoriesAsync();
+                }
+                catch (Exception)
+                {
+                    return this.RedirectToAction("Error", "Home");
+                }
+
+                return this.View(model);
+            }
+
+            try
+            {
+                await this.adService.EditAdAsync(model, id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
+
+            return this.RedirectToAction("All", "Ad");
         }
     }
 }

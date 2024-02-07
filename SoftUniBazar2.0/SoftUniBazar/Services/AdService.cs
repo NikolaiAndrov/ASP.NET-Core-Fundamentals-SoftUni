@@ -35,6 +35,20 @@
             await this.dbContext.SaveChangesAsync();
         }
 
+        public async Task EditAdAsync(AdPostModel model, int adId)
+        {
+            Ad ad = await this.dbContext.Ads
+                .FirstAsync(ad => ad.Id == adId);
+
+            ad.Name = model.Name;
+            ad.Description = model.Description;
+            ad.ImageUrl = model.ImageUrl;
+            ad.Price = model.Price;
+            ad.CategoryId = model.CategoryId;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
         public async Task<AdPostModel> GetAdForEditAsync(int adId)
         {
             AdPostModel model = await this.dbContext.Ads
